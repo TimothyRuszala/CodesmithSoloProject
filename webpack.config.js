@@ -45,7 +45,8 @@ module.exports = {
             publicPath: '/',
         },
         proxy: {
-            '/emojis': 'http://localhost:3000'
+            '/emojis': 'http://localhost:3000',
+            '/cart': 'http://localhost:3000'
         }
     }
 };

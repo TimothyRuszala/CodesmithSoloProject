@@ -3,20 +3,20 @@
 import React, { useState, useEffect } from 'react';
 import EmojiCard from './EmojiCard.jsx';
 
-// import "../scss/style.scss";
+
 
 const Items = props => {
 
     const [emojis, setEmojis] = useState([]);
     const [fetched, setFetched] = useState(false);
 
+    // fetch emojis
     useEffect(() => {
         console.log('items mounted/updated');
         fetch('/emojis/')
             .then(data => data.json())
             .then(data => {
-                console.log('emojis fetched.');
-                console.log(data);
+                console.log('emojis fetched:', data);
                 if (!fetched) {
                     setFetched(true);
                     setEmojis(data)
@@ -27,10 +27,59 @@ const Items = props => {
             });
     });
 
+    // initialize cart
+    useEffect(() => {
+        fetch('/cart/')
+            .then(data => data.json())
+            .then(data => {
+                console.log('cart initialized:', data);
+        })
+    })
 
+    const addEmoji = function (){
+        console.log('Items.jsx addEmoji called');
+        fetch('/emojis/', {
+            method: 'POST',
+            body: JSON.stringify({
+                name: Math.floor(Math.random() * 100000),
+                emoticon: '?'
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+            .then(data => data.json())
+            .then(data => {
+                console.log('data received from addEmoji in Items.jsx:', data);
+                setFetched(false);
+            })
+            .catch(err => {
+                console.log('addEmoji error: ', err);
+        })
+    }
+
+    const deleteEmoji = function (name) {
+        console.log('Items.jsx deleteEmoji called');
+        fetch(`/emojis/${name}`, {
+            method: 'DELETE',
+        })
+            .then(data => data.json())
+            .then(data => {
+                console.log('data returned after delete:', data);
+                setFetched(false);
+        })
+    }
+
+    const addToCart = function () {
+        console.log('Items.jsx addToCart called');
+        
+    }
+
+
+    // create the array of cards to render
     const emojiCards = [];
     for (const emoji of emojis) {
-        emojiCards.push(<EmojiCard emoticon={emoji.code} name={emoji.name} description={emoji.description}/>);
+        emojiCards.push(<EmojiCard emoticon={emoji.emoticon} name={emoji.name} description={emoji.description} del={deleteEmoji} price={emoji.price}/>);
     }
 
     if (!fetched) {
@@ -42,11 +91,10 @@ const Items = props => {
     }
 
 
-
     return (
         <>
             <div>
-                <button>Add an Emoji</button>
+                <button className="add-emoji" onClick={addEmoji}>Add an Emoji</button>
             </div>
             <div className="items">
                 {emojiCards}

@@ -3,7 +3,11 @@ const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const emojiController = require('./controllers/emojiController');
+const emojiRouter = require('./routers/emojiRouter.js');
+const cartRouter = require('./routers/cartRouter.js');
+
+
+// const emojiController = require('./controllers/emojiController');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -21,25 +25,19 @@ app.use(cookieParser());
 
 app.use(express.static(path.resolve(__dirname, '../client')))
 
-app.get('/', (req, res) => {
-    return res.status(200).send('Hello World. :)');
-});
+if (process.env.NODE_ENV === 'development') {
+    app.get('/', (req, res) => {
+        return res.status(200).send('Hello World. :)');
+    });
+}
 
-app.post('/emojis', emojiController.addEmoji, (req, res) => {
-    return res.status(200).send(res.locals.emoji);
-});
+app.use('/emojis', emojiRouter);
 
-app.get('/emojis', emojiController.getAllEmojis, (req, res) => {
-    return res.json(res.locals.emojis);
-});
-
-app.patch('/emojis', emojiController.updateEmoji, (req, res) => {
-    return res.json(res.locals.updated);
-});
+app.use('/cart', cartRouter);
 
 app.use((req, res) => {
     res.status(404).send('Requested URL not found.');
-})
+});
 
 app.use((err, req, res, next) => {
     const defaultErr = {
@@ -48,7 +46,7 @@ app.use((err, req, res, next) => {
         message: { err: 'An error has occurred.' }
     };
     const errObj = Object.assign(defaultErr, err);
-    console.log(errObj.log);
+    console.log("LOG:", errObj.log);
     return res.status(errObj.status).send(errObj.message);
 });
 
