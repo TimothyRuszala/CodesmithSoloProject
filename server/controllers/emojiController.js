@@ -33,10 +33,13 @@ emojiController.updateEmoji = (req, res, next) => {
   Emoji.findOneAndUpdate(
     { name: req.body.oldName },
     {
-      name: req.body.newName,
-      description: req.body.newDescription,
-      emoticon: req.body.newEmoticon,
-      price: req.body.newPrice
+      $set: {
+        name: req.body.newName,
+        description: req.body.newDescription,
+        emoticon: req.body.newEmoticon,
+        price: req.body.newPrice,
+        price_ID: req.body.newPriceID,
+      },
     },
     {
       new: true // this should return the new emoji into the doc object

@@ -11,6 +11,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: 'bundle.js',
+        publicPath: '/'
     },
     mode: process.env.NODE_ENV,
     plugins: [
@@ -47,6 +48,7 @@ module.exports = {
         proxy: {
             '/emojis': 'http://localhost:3000',
             '/cart': 'http://localhost:3000'
-        }
+        },
+        historyApiFallback: true
     }
 };

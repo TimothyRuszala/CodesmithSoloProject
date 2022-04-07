@@ -13,13 +13,19 @@ import Cart from './components/Cart.jsx';
 
 
 render(
-  <BrowserRouter>
-    <Routes>
-      {/* <App /> */}
-      <Route path="/" element={<App />} />
-      <Route path="about" element={<About />} />
-      <Route path="myCart" element={<Cart />} />
-    </Routes>
-  </BrowserRouter>,
+    <BrowserRouter>
+      <Routes>
+        {/* <App /> */}
+        <Route
+          path="/"
+          element={<App />} />
+        <Route 
+          path="about" 
+          element={<About />} />
+        <Route 
+          path="myCart" 
+          element={<Cart />} />
+      </Routes>
+    </BrowserRouter>,
   document.getElementById('root'),
 );

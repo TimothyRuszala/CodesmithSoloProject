@@ -79,7 +79,8 @@ const Items = props => {
     // create the array of cards to render
     const emojiCards = [];
     for (const emoji of emojis) {
-        emojiCards.push(<EmojiCard emoticon={emoji.emoticon} name={emoji.name} description={emoji.description} del={deleteEmoji} price={emoji.price} key={emoji.name}/>);
+        // const updating = (emoji.emoticon === '?') ? true : false;
+        emojiCards.push(<EmojiCard emoticon={emoji.emoticon} name={emoji.name} description={emoji.description} del={deleteEmoji} price={emoji.price} key={emoji.name} price_ID={emoji.price_ID}/>);
     }
 
     if (!fetched) {
@@ -92,14 +93,14 @@ const Items = props => {
 
 
     return (
-        <>
+        <div className="content">
             <div>
                 <button className="add-emoji" onClick={addEmoji}>Add an Emoji</button>
             </div>
             <div className="items">
                 {emojiCards}
             </div>
-        </>
+        </div>
     );
 }
 

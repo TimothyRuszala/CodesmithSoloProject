@@ -11,6 +11,7 @@ const cartRouter = require('./routers/cartRouter.js');
 const dotenv = require('dotenv');
 dotenv.config();
 
+
 const app = express();
 
 const PORT = process.env.PORT;
@@ -31,9 +32,19 @@ if (process.env.NODE_ENV === 'development') {
     });
 }
 
+
+
 app.use('/emojis', emojiRouter);
 
 app.use('/cart', cartRouter);
+
+// app.get('/*', (req, res) => {
+//     res.sendFile(path.join(__dirname, '../index.html'), function (err) {
+//         if (err) {
+//             res.status(500).send(err);
+//         }
+//     });
+// });
 
 app.use((req, res) => {
     res.status(404).send('Requested URL not found.');

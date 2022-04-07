@@ -4,18 +4,21 @@ import React, { useState } from 'react';
 
 const EmojiCard = props => {
 
-    const [updating, setUpdating] = useState(false);
+    
     const [name, setName] = useState(props.name);
-    const [description, setDescription] = useState(props.description);
     const [emoticon, setEmoticon] = useState(props.emoticon);
     const [price, setPrice] = useState(props.price);
+    const [priceID, setPriceID] = useState(props.price_ID);
+    const [updating, setUpdating] = useState(false);
+
 
 
     const update = function() {
         const newName = document.getElementById('new-name').value.toUpperCase();
-        // const newDescription = document.getElementById('new-description').value;
         const newPrice = document.getElementById('new-price').value;
         const newEmoticon = document.getElementById('new-emoticon').value;
+        const newPriceID = document.getElementById('new-price_id').value;
+
 
         fetch('/emojis/', {
             method: 'PATCH',
@@ -23,7 +26,8 @@ const EmojiCard = props => {
                 oldName: name,
                 newName,
                 newPrice,
-                newEmoticon
+                newEmoticon,
+                newPriceID,
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -34,9 +38,9 @@ const EmojiCard = props => {
                 console.log("data sent back to EmojiCard:", data);
                 setUpdating(false);
                 setName(data.name);
-                // setDescription(data.description);
                 setPrice(data.price);
                 setEmoticon(data.emoticon);
+                setPriceID(data.priceID);
             })
     }
 
@@ -51,7 +55,8 @@ const EmojiCard = props => {
             body: JSON.stringify({
                 emoticon,
                 name,
-                price
+                price,
+                priceID
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -61,11 +66,14 @@ const EmojiCard = props => {
             .then(data => {
                 console.log(data);
                 console.log(`New cart: ${data}`);
+                document.getElementById(`add-${name}-to-cart`).innerText = 'Added!';
             })
         .catch(err => console.log('EmojiCard addToCart err:', err));
     }
 
+
     if (updating) {
+        console.log('updating... priceID is', priceID);
         return (
             <div className="card">
                 <span>{emoticon}</span>
@@ -77,22 +85,27 @@ const EmojiCard = props => {
                 <br></br>
                 <label for="new-emoticon">Emoticon:</label>
                 <input type="text" id="new-emoticon" name="new-emoticon" defaultValue={emoticon}></input>
+                <br></br>
+                <label for="new-price_id">price_id:</label>
+                <input type="text" id="new-price_id" name="new-price_id" defaultValue={priceID}></input>
+                <br></br>
                 <button onClick={update} id="confirm">Confirm</button>
             </div>
         )
     }
 
-    console.log('state:', name, description, emoticon);
     return (
         <div className="card">
             <span>{emoticon}</span>
             <p className="name">{name}</p>
             <div className="data">
-                <p>Price: {price} ETH</p>
+                <p>${parseFloat(price).toFixed(2)} </p>
                 {/* <p>Description: {description}</p> */}
-                <button onClick={edit}>Edit</button>
-                <button onClick={() => props.del(name)}>Delete</button>
-                <button onClick={addToCart}>Add to cart</button>
+                <div className="card-buttons">
+                    <button onClick={edit}>Edit</button>
+                    <button onClick={() => props.del(name)}>Delete</button>
+                    <button onClick={addToCart} id={`add-${name}-to-cart`}>Add to cart</button>
+                </div>
             </div>
         </div>
     )
