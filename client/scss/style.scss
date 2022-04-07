@@ -13,14 +13,34 @@ header {
   top: 0;
   background-color: rgb(148, 52, 238);
   width: 100%;
+  outline: 1px solid yellow;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+}
+
+header p {
+  display: inline-block;
 }
 
 h1 {
-  outline: 1px solid yellow;
+  display: inline-block;
   font-style: italic;
   font-weight: bold;
   text-align: center;
-  padding: 1em;
+  padding: 0.5em;
+  font-size: 3.5rem;
+}
+
+.cart {
+  background-color: white;
+  padding: 0.25em;
+  border-radius: 100%;
+  min-width: 2em;
+  min-height: 2em;
+  text-align: center;
+  font-size: 1.5rem;
 }
 
 .add-emoji {
@@ -34,7 +54,7 @@ h1 {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-top: 7rem;
+  margin-top: 10rem;
   margin-bottom: 5rem;
 }
 

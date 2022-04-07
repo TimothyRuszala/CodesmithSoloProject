@@ -25,7 +25,7 @@ const Items = props => {
             .catch(err => {
                 console.log(err);
             });
-    });
+    }, [emojis, fetched]); // dependency array causes this to fire when state changes here
 
     // initialize cart
     useEffect(() => {
@@ -51,7 +51,7 @@ const Items = props => {
             .then(data => data.json())
             .then(data => {
                 console.log('data received from addEmoji in Items.jsx:', data);
-                setFetched(false);
+                setFetched(false); // refactor this so that it's setEmojis, not setFetched
             })
             .catch(err => {
                 console.log('addEmoji error: ', err);
@@ -79,7 +79,7 @@ const Items = props => {
     // create the array of cards to render
     const emojiCards = [];
     for (const emoji of emojis) {
-        emojiCards.push(<EmojiCard emoticon={emoji.emoticon} name={emoji.name} description={emoji.description} del={deleteEmoji} price={emoji.price}/>);
+        emojiCards.push(<EmojiCard emoticon={emoji.emoticon} name={emoji.name} description={emoji.description} del={deleteEmoji} price={emoji.price} key={emoji.name}/>);
     }
 
     if (!fetched) {

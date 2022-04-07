@@ -44,6 +44,27 @@ const EmojiCard = props => {
         setUpdating(true);
     }
 
+    const addToCart = function () {
+        console.log('addToCart called');
+        fetch('/cart/', {
+            method: 'POST',
+            body: JSON.stringify({
+                emoticon,
+                name,
+                price
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+            .then(data => data.json())
+            .then(data => {
+                console.log(data);
+                console.log(`New cart: ${data}`);
+            })
+        .catch(err => console.log('EmojiCard addToCart err:', err));
+    }
+
     if (updating) {
         return (
             <div className="card">
@@ -71,7 +92,7 @@ const EmojiCard = props => {
                 {/* <p>Description: {description}</p> */}
                 <button onClick={edit}>Edit</button>
                 <button onClick={() => props.del(name)}>Delete</button>
-                <button >Add to cart</button>
+                <button onClick={addToCart}>Add to cart</button>
             </div>
         </div>
     )
